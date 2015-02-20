@@ -1,64 +1,44 @@
 __author__ = 'XUE Yang'
 
-import numpy
+import numpy as np
 # import random
 import matplotlib.pyplot as plt
 import random
 
 
-def ReadMatrix (Str):
-    fin = open(Str, 'r')
-    tList = []
+def GetMatrixColNum(matrix):
+    return matrix.shape[1]
+
+
+def GetMatrixRowNum(matrix):
+    return matrix.shape[0]
+
+
+def ReadMatrix (str):
+    fin = open(str, 'r')
+    dataList = []
     for line in fin:
-        tList.append(line.split())
-    tMatrix=numpy.mat(tList,dtype=numpy.float32)
+        dataList.append(line.split())
     fin.close()
-    return tMatrix
+    return dataList
 
 
-def ReadPointNum(str):
-    fin=open(str,'r')
-    tnum=len(fin.readline().split())
-    fin.close()
-    return tnum
+def GetNumpyMat(list):
+    return np.mat(list,dtype=np.float32)
 
 
-def ReadData(samplex_addr,sampley_addr,polyx_addr,polyy_addr):
-    samplex=ReadMatrix(samplex_addr)
-    sampley=ReadMatrix(sampley_addr)
-    polyx=ReadMatrix(polyx_addr)
-    polyy=ReadMatrix(polyy_addr)
-    sampleN=ReadPointNum(samplex_addr)
-    polyN=ReadPointNum(polyx_addr)
-    return samplex,sampley,polyx,polyy,sampleN,polyN
-'''
 def GenerateFeatureTransformation(vector,K,N):
-    Phi=numpy.mat(numpy.zeros((K,N)))
+    Phi=np.mat(np.zeros((K,N)))
     for i in range(K):
-        Phi[i][0:N]=numpy.power(vector,i)
-    return Phi
-'''
-
-
-def GenerateFeatureTransformation(vector,K,N):
-    Phi=numpy.mat(numpy.zeros((K,N)))
-    Phi[0:K/3,0:N]=vector.T
-    #Phi[K/4:K*2/4,0:N]=numpy.reciprocal(vector.T)
-    Phi[K/3:K*2/3,0:N]=numpy.power(vector.T,2)
-    Phi[K*2/3:K,0:N]=numpy.exp(numpy.power(vector.T,2))
+        Phi[i][0:N]=np.power(vector,i)
     return Phi
 
 
-def PlotFunction(str1,type,polyx,polyy,funcPrediction,samplex,sampley,funcPre_d=None):
-    plt.plot(polyx,funcPrediction,"bo-",label="Estimated function")
-    if funcPre_d!=None:
-        plt.plot(polyx,funcPrediction+funcPre_d,"b-",label="Standard deviation")
-        plt.plot(polyx,funcPrediction-funcPre_d,"b-")
-    plt.plot(polyx,polyy,"go-",label="True function")
-    plt.plot(samplex,sampley,"ro",label="Samples")
-    plt.title(str1)
+def PlotRegression(title,LS):
+    plt.plot(LS._polyx.getA1(),LS._predicty.getA1(),"b-",label="Estimated function")
+    plt.plot(LS._samplex.getA1(),LS._sampley.getA1(),"ro",label="Samples")
+    plt.title(title)
     plt.legend()
-    # plt.savefig("c:\\figures\\"+str1+str(int(random.random()*1000))+'.png',dpi=200)
     plt.show()
 
 def PlotCount(str1,type,polyy,funcPrediction,funcPre_d=None):
@@ -93,8 +73,8 @@ def SubsetCalculation(samplex,sampley,polyx,polyy,polyN,K,SAMPLE_NUM,LOOP_NUM,ca
                 del sublistx[k]
                 del sublisty[k]
             subsampleN=len(sublistx)
-            subsamplex=numpy.mat(sublistx)
-            subsampley=numpy.mat(sublisty).T
+            subsamplex=np.mat(sublistx)
+            subsampley=np.mat(sublisty).T
             MSE_LS=calculate(subsamplex,subsampley,polyx,polyy,subsampleN,polyN,K)
             MSElist.append(MSE_LS)
         for i in range(len(MSEaverage)):
@@ -114,8 +94,8 @@ def OutlierCalculation(samplex,sampley,polyx,polyy,polyN,K,SAMPLE_NUM,LOOP_NUM,O
                 k=random.randrange(len(sublisty))
                 sublisty[k]+=OUTLIER_NUM
             sampleN=len(sublistx)
-            subsamplex=numpy.mat(sublistx)
-            subsampley=numpy.mat(sublisty).T
+            subsamplex=np.mat(sublistx)
+            subsampley=np.mat(sublisty).T
             MSE=calculate(subsamplex,subsampley,polyx,polyy,sampleN,polyN,K)
             MSElist.append(MSE)
         for i in range(len(MSEaverage)):
