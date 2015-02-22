@@ -6,37 +6,37 @@ import matplotlib.pyplot as plt
 import random
 
 
-def GetMatrixColNum(matrix):
-    return matrix.shape[1]
-
-
-def GetMatrixRowNum(matrix):
+def get_matrix_row_num(matrix):
     return matrix.shape[0]
 
 
-def ReadMatrix (str):
+def get_matrix_col_num(matrix):
+    return matrix.shape[1]
+
+
+def read_matrix (str):
     fin = open(str, 'r')
-    dataList = []
+    data_list = []
     for line in fin:
-        dataList.append(line.split())
+        data_list.append(line.split())
     fin.close()
-    return dataList
+    return data_list
 
 
-def GetNumpyMat(list):
+def get_numpy_mat(list):
     return np.mat(list,dtype=np.float32)
 
 
-def GenerateFeatureTransformation(vector,K,N):
-    Phi=np.mat(np.zeros((K,N)))
-    for i in range(K):
-        Phi[i][0:N]=np.power(vector,i)
-    return Phi
+def feature_transformation(vector,k,n):
+    phi=np.mat(np.zeros((k,n)))
+    for i in range(k):
+        phi[i][0:n]=np.power(vector,i)
+    return phi
 
 
-def PlotRegression(title,LS):
-    plt.plot(LS._polyx.getA1(),LS._predicty.getA1(),"b-",label="Estimated function")
-    plt.plot(LS._samplex.getA1(),LS._sampley.getA1(),"ro",label="Samples")
+def plot_regression(title, LS):
+    plt.plot(LS.get_poly_x(), LS.get_predict_y(), "b-", label="Estimated function")
+    plt.plot(LS.get_sample_x(), LS.get_sample_y(), "ro", label="Samples")
     plt.title(title)
     plt.legend()
     plt.show()
