@@ -38,8 +38,8 @@ def lasso_regression_demo():
     base.plot_regression("L1-regularized least-square regression", regression)
 
 
-#ls_regression_demo()
-#rls_regression_demo()
+ls_regression_demo()
+rls_regression_demo()
 lasso_regression_demo()
 
 
