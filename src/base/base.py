@@ -1,7 +1,6 @@
 __author__ = 'XUE Yang'
 
 import numpy as np
-# import random
 import matplotlib.pyplot as plt
 import random
 
@@ -34,9 +33,12 @@ def feature_transformation(vector,k,n):
     return phi
 
 
-def plot_regression(title, LS):
-    plt.plot(LS.get_poly_x(), LS.get_predict_y(), "b-", label="Estimated function")
-    plt.plot(LS.get_sample_x(), LS.get_sample_y(), "ro", label="Samples")
+def plot_regression(title, Regression):
+    plt.plot(Regression.get_poly_x(), Regression.get_predict_y(), "b-", label="Estimated function")
+    plt.plot(Regression.get_sample_x(), Regression.get_sample_y(), "ro", label="Samples")
+    if Regression.is_distribution():
+        plt.plot(Regression.get_poly_x(), Regression.get_predict_y()-Regression.get_deri(), "b-",label="Standard deviation")
+        plt.plot(Regression.get_poly_x(), Regression.get_predict_y()+Regression.get_deri(), "b-")
     plt.title(title)
     plt.legend()
     plt.show()
