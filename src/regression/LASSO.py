@@ -16,7 +16,7 @@ class LASSO(RegressionBase):
     def calculate(self):
 
         #CREATE PHI
-        phi = feature_transformation(self._sample_x,self._k,get_matrix_col_num(self._sample_x))
+        phi = feature_transformation(self._sample_x, self._k, get_matrix_col_num(self._sample_x))
         #CREATE HESSIAN MATRIX
         k=self._k
         hessian=np.zeros((k*2,k*2))
@@ -39,3 +39,4 @@ class LASSO(RegressionBase):
         theta=np.mat(result_cons['x'][0:k]-result_cons['x'][k:k*2])
         self._theta=theta.T
         return self
+
