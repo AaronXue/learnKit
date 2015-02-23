@@ -13,7 +13,7 @@ class RLS(RegressionBase):
 
     def calculate(self):
 
-        phi = feature_transformation(self._sample_x,self._k,get_matrix_col_num(self._sample_x))
+        phi = feature_transformation(self._sample_x, self._k, get_matrix_col_num(self._sample_x))
         self._theta = (phi*phi.T+np.identity(self._k)*self._lam).I*phi*self._sample_y
         return self
 
