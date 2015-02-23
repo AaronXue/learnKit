@@ -34,6 +34,10 @@ class RegressionBase(object):
 
         return self._predict_y.getA1()
 
+    def is_distribution(self):
+
+        return False
+
     @abstractmethod
     def calculate(self):
 
@@ -45,6 +49,6 @@ class RegressionBase(object):
             raise Exception("Theta is None.")
         else:
             self._poly_x = get_numpy_mat(poly_x)
-            phix = feature_transformation(self._poly_x, self._k,get_matrix_col_num(self._poly_x))
+            phix = feature_transformation(self._poly_x, self._k, get_matrix_col_num(self._poly_x))
             self._predict_y = phix.T*self._theta
             return self._predict_y.getA()
