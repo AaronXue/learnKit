@@ -4,6 +4,8 @@ from src.base import base
 from src.regression.LS import LS
 from src.regression.RLS import RLS
 from src.regression.LASSO import LASSO
+from src.regression.RR import RR
+from src.regression.BR import BR
 
 def demo_read_data():
 
@@ -37,10 +39,22 @@ def lasso_regression_demo():
     regression.calculate().predict(poly_x)
     base.plot_regression("L1-regularized least-square regression", regression)
 
+def rr_regression_demo():
 
-ls_regression_demo()
-rls_regression_demo()
-lasso_regression_demo()
+    (sample_x, sample_y, poly_x) = demo_read_data()  #read data
+    regression = RR(sample_x,sample_y,5)
+    regression.calculate().predict(poly_x)
+    base.plot_regression("robust regression", regression)
+
+def br_regression_demo():
+
+    (sample_x, sample_y, poly_x) = demo_read_data()  #read data
+    regression = BR(sample_x,sample_y,5)
+    regression.calculate().predict(poly_x)
+    base.plot_regression("Bayesian regression", regression)
+
+
+br_regression_demo()
 
 
 
