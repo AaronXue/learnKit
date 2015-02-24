@@ -1,7 +1,7 @@
 __author__ = 'AaronXue'
 
 
-from abc import ABCMeta,abstractmethod
+from abc import ABCMeta, abstractmethod
 from src.base.base import *
 
 
@@ -40,7 +40,6 @@ class RegressionBase(object):
 
     @abstractmethod
     def calculate(self):
-
         pass
 
     def predict(self, poly_x):
