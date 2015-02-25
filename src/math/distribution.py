@@ -4,7 +4,7 @@ __author__ = 'AaronXue'
 import math
 import numpy as np
 
-def MultiGaussian(x,mean,cov):
+def multi_gaussian(x,mean,cov):
     d=len(x.getA1())
     t=(x-mean).T
     tcov=np.mat(cov)
