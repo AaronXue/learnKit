@@ -43,6 +43,23 @@ def plot_regression(title, Regression):
     plt.legend()
     plt.show()
 
+
+'''
+    for j in range(K):
+        sampleCluster=[]
+        for i in range(sampleN):
+            if Z[i][j]==1:
+                t=sampleA.getA()[i]
+                sampleCluster.append(t)
+        samplePlot=numpy.array(sampleCluster)
+        plt.plot(samplePlot[:,0],samplePlot[:,1],"o",label="Cluster "+str(j))
+    plt.title("K means K="+str(K))
+    plt.legend(loc=3)
+    plt.show()
+
+    return J
+    '''
+
 def PlotCount(str1,type,polyy,funcPrediction,funcPre_d=None):
     plt.plot(funcPrediction,"bo-",label="Estimated counts")
     if funcPre_d!=None:
