@@ -11,9 +11,9 @@ class ClusterBase(object):
 
     def __init__(self, sample, k):
 
-        self._sample = sample
+        self._sample = get_numpy_mat(sample)
         self._k = k
-        self._cluster = None
+        self._cluster_means = None
 
     def _init_cluster_means(self):
 
