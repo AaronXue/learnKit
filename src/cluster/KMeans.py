@@ -6,20 +6,19 @@ import numpy as np
 import math
 from src.base.base import *
 
-CONVERGE = 0.001
+CONVERGE = 0.00001
 
 class KMeans(ClusterBase):
 
-    def __init__(self, sample, k, iter=0):
+    def __init__(self, sample, k, it=0):
 
         super().__init__(sample, k)
-        self._z = None
-        self._iter = iter
-
+        self._z = np.zeros((get_matrix_row_num(self._sample), self._k))
+        self._it = it
+        self._result = None
 
     def step_one(self):
 
-        self._z = np.zeros((get_matrix_row_num(self._sample), self._k))
         for i, sample_value in enumerate(self._sample):
             min = float("inf")
             t = None
@@ -37,32 +36,35 @@ class KMeans(ClusterBase):
     def cluster(self):
 
         self._cluster_means = self._init_cluster_means()
-        prev_cluster_means = self._cluster_means
-        if self._iter == 0:
+        prev_cluster_means = self._cluster_means.copy()
+        it_num = 1
+        if self._it == 0:
             while True:
+                print("iteration: ", it_num)
                 self.step_one()
                 self.step_two()
                 if np.linalg.norm(prev_cluster_means - self._cluster_means) < CONVERGE:
                     break
+                prev_cluster_means = self._cluster_means.copy()
+                it_num += 1
         else:
-            for i in range(self._iter):
+            for i in range(self._it):
+                print("iteration: ", it_num)
                 self.step_one()
                 self.step_two()
-
-
+                it_num += 1
         return self._get_result()
 
 
     def _get_result(self):
 
         n = get_matrix_row_num(self._sample)
-        result = np.zeros(n)
+        self._result = np.zeros(n)
         for i in range(n):
             for j in range(self._k):
                 if self._z[i][j] == 1:
-                    result[i] = j
-        return result.getA1()
-
+                    self._result[i] = j
+        return self._result.astype(int).tolist()
 
 
 
