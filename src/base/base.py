@@ -23,18 +23,18 @@ def read_matrix (str):
 
 
 def get_numpy_mat(list):
-    return np.mat(list,dtype=np.float32)
+    return np.mat(list,dtype = np.float32)
 
 
-def feature_transformation(vector,k,n):
-    phi=np.mat(np.zeros((k,n)))
+def feature_transformation(vector, k, n):
+    phi=np.mat(np.zeros((k, n)))
     for i in range(k):
-        phi[i][0:n]=np.power(vector,i)
+        phi[i][0:n] = np.power(vector, i)
     return phi
 
 
 def plot_regression(title, Regression):
-    plt.plot(Regression.get_poly_x(), Regression.get_predict_y(), "b-", label="Estimated function")
+    plt.plot(Regression.get_poly_x(), Regression.get_predict_y(), "bo-", label="Estimated function")
     plt.plot(Regression.get_sample_x(), Regression.get_sample_y(), "ro", label="Samples")
     if Regression.is_distribution():
         plt.plot(Regression.get_poly_x(), Regression.get_predict_y()-Regression.get_deri(), "b-",label="Standard deviation")
@@ -44,31 +44,19 @@ def plot_regression(title, Regression):
     plt.show()
 
 
-'''
-    for j in range(K):
-        sampleCluster=[]
-        for i in range(sampleN):
-            if Z[i][j]==1:
-                t=sampleA.getA()[i]
-                sampleCluster.append(t)
-        samplePlot=numpy.array(sampleCluster)
-        plt.plot(samplePlot[:,0],samplePlot[:,1],"o",label="Cluster "+str(j))
-    plt.title("K means K="+str(K))
-    plt.legend(loc=3)
+def plot_cluster(title, Cluster, result):
+    sample = Cluster.get_sample()
+    dimension = len(sample[0])
+    if dimension != 2:
+        raise Exception("Only support 2-d plot.")
+    for j in range(Cluster.get_k()):
+        plot_list = [i for i in range(len(result)) if j == result[i]]
+        plot_sample_x= [sample[i][0] for i in plot_list]
+        plot_sample_y= [sample[i][1] for i in plot_list]
+        plt.plot(plot_sample_x, plot_sample_y, "o", label="Cluster "+str(j))
+    plt.title(title)
     plt.show()
 
-    return J
-    '''
-
-def PlotCount(str1,type,polyy,funcPrediction,funcPre_d=None):
-    plt.plot(funcPrediction,"bo-",label="Estimated counts")
-    if funcPre_d!=None:
-        plt.plot(funcPrediction+funcPre_d,"b-",label="Standard deviation")
-        plt.plot(funcPrediction-funcPre_d,"b-")
-    plt.plot(polyy,"go-",label="True counts")
-    plt.title(str1)
-    plt.legend(loc=2)
-    plt.show()
 
 def PlotFunction2(SAMPLE_NUM,MSEaverage_LS,MSEaverage_RLS,MSEaverage_LASSO,MSEaverage_RR,MSEaverage_BR,str):
     plt.plot(SAMPLE_NUM,MSEaverage_LS,"bo-",label="LS")
