@@ -9,11 +9,14 @@ class ClusterBase(object):
 
     __metaclass__ = ABCMeta
 
-    def __init__(self, sample, k):
+    def __init__(self, sample, k, it=0):
 
         self._sample = get_numpy_mat(sample).T
         self._k = k
         self._cluster_means = None
+        self._z = np.zeros((get_matrix_row_num(self._sample), self._k))
+        self._it = it
+        self._result = None
 
     def _init_cluster_means(self):
 
