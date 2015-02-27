@@ -30,34 +30,24 @@ class KMeans(ClusterBase):
 
         self._cluster_means = self._init_cluster_means()
         prev_cluster_means = self._cluster_means.copy()
-        it_num = 1
+        it_num = 0
         if self._it == 0:
             while True:
-                print("iteration: ", it_num)
                 self.step_one()
                 self.step_two()
                 if np.linalg.norm(prev_cluster_means - self._cluster_means) < CONVERGE:
+                    print("iteration: ", it_num)
                     break
                 prev_cluster_means = self._cluster_means.copy()
                 it_num += 1
         else:
             for i in range(self._it):
-                print("iteration: ", it_num)
                 self.step_one()
                 self.step_two()
                 it_num += 1
-        return self._get_result()
+            print("iteration: ", it_num)
+        return self._z.tolist()
 
-
-    def _get_result(self):
-
-        n = get_matrix_row_num(self._sample)
-        self._result = np.zeros(n)
-        for i in range(n):
-            for j in range(self._k):
-                if self._z[i][j] == 1:
-                    self._result[i] = j
-        return self._result.astype(int).tolist()
 
 
 
