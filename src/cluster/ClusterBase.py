@@ -22,6 +22,10 @@ class ClusterBase(object):
 
         return np.mat([self._sample.getA()[i] for i in np.random.permutation(get_matrix_row_num(self._sample))[0:self._k]])
 
+    @abstractmethod
+    def cluster(self):
+        pass
+
     def get_k(self):
 
         return self._k
