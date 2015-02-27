@@ -10,13 +10,6 @@ CONVERGE = 0.00001
 
 class KMeans(ClusterBase):
 
-    def __init__(self, sample, k, it=0):
-
-        super().__init__(sample, k)
-        self._z = np.zeros((get_matrix_row_num(self._sample), self._k))
-        self._it = it
-        self._result = None
-
     def step_one(self):
 
         for i, sample_value in enumerate(self._sample):
