@@ -6,11 +6,11 @@ import numpy as np
 from src.base.base import *
 from src.math.distribution import *
 
-CONVERGE = 0.00001
+CONVERGE = 0.0001
 
 class EM(ClusterBase):
 
-    def __init__(self, sample, k, it=0, var=5):
+    def __init__(self, sample, k, it=0, var=15):
 
         super().__init__(sample, k, it)
         self._pi = None
@@ -20,20 +20,20 @@ class EM(ClusterBase):
     def e_step(self):
 
         for i in range(get_matrix_row_num(self._sample)):
-            x_sum=0
+            x_sum = 0
             for j in range(self._k):
                 x_sum += self._pi[j]*multi_gaussian(self._sample[i], self._cluster_means[j], self._cov[j])
             for j in range(self._k):
-                self._z[i][j]=self._pi[j]*multi_gaussian(self._sample[i], self._cluster_means[j], self._cov[j]) / x_sum
+                self._z[i][j] = self._pi[j]*multi_gaussian(self._sample[i], self._cluster_means[j], self._cov[j]) / x_sum
 
     def m_step(self):
 
         n = get_matrix_row_num(self._sample)
-        d = get_matrix_col_num(self._sample[0])
+        d = get_matrix_col_num(self._sample)
         for j in range(self._k):
             cluster_sum = np.sum([self._z[i][j] for i in range(n)])
             self._pi[j] = cluster_sum / n
-            self._cluster_means[j] = np.sum([self._z[i][j]*self._sample[i] for i in range(n)]) / cluster_sum
+            self._cluster_means[j] = np.sum([self._z[i][j]*self._sample[i] for i in range(n)], axis=0) / cluster_sum
             sum_mat = np.zeros((d, d))
             for i in range(n):
                 t = (self._sample[i]-self._cluster_means[j]).T
@@ -46,13 +46,13 @@ class EM(ClusterBase):
         j_val = 0
         for i in range(n):
             for j in range(self._k):
-                j_val += self._z[i][j]*(np.log(self._pi[j]*multi_gaussian(self._sample[i], self._cluster_means[j], self._cov[j])))
+                j_val += self._z[i][j]*((self._pi[j]*multi_gaussian(self._sample[i], self._cluster_means[j], self._cov[j])))
         return j_val
 
 
     def _init_once(self):
 
-        d = get_matrix_col_num(self._sample[0])
+        d = get_matrix_col_num(self._sample)
         # init assignment
         self._cluster_means = self._init_cluster_means()
         for i, sample_value in enumerate(self._sample):
@@ -63,6 +63,7 @@ class EM(ClusterBase):
                     min = np.linalg.norm(sample_value - cluster_value)
                     t = j
             self._z[i,t] = 1
+        # init pi
         self._pi = np.zeros(self._k)
         # init covariance
         self._cov = np.zeros((self._k, d, d))
@@ -82,10 +83,12 @@ class EM(ClusterBase):
             while True:
                 self.e_step()
                 self.m_step()
-                if abs(prev_j - self.calc_j()) < CONVERGE:
+                print(prev_j)
+                curr_j = self.calc_j()
+                if abs(prev_j - curr_j) < CONVERGE:
                     print("iteration: ", it_num)
                     break
-                prev_cluster_means = self._cluster_means.copy()
+                prev_j = curr_j
                 it_num += 1
         else:
             for i in range(self._it):
