@@ -5,8 +5,6 @@
 - Regression: least-square(LS), regularized LS(RLS), L1-regularized LS(LASSO), robust regression, Bayesian regression
 - Cluster: K-Means, EM
 
-##Note
-还在施工中……
 
 
 
